@@ -1,5 +1,6 @@
 # Tip — Fun tipping landing page
 
+[![CI](https://github.com/Milos-Mihailovic/Tip/actions/workflows/ci.yml/badge.svg)](https://github.com/Milos-Mihailovic/Tip/actions/workflows/ci.yml)
 This is a small React + Vite landing page to accept quick tips/donations via Stripe Checkout and PayPal.
 
 Features
@@ -65,6 +66,33 @@ PayPal notes
 Deployment
 - This project is ready for Vercel or Netlify. Vercel will treat `api/*.js` as serverless functions.
 - Add environment variables in the hosting dashboard (STRIPE_SECRET_KEY, VITE_STRIPE_PUBLISHABLE_KEY, VITE_PAYPAL_CLIENT_ID).
+
+CI & Automatic Deployment (Vercel)
+
+You can auto-deploy on push to `main` using either Vercel's Git integration (recommended) or the included GitHub Action.
+
+1) Vercel (recommended)
+
+- Connect this GitHub repository in the Vercel dashboard. Vercel will detect the project and create a deployment pipeline that runs on every push.
+- Add environment variables in Vercel Project Settings → Environment Variables (`STRIPE_SECRET_KEY`, `PAYPAL_CLIENT_SECRET`, etc.).
+
+2) GitHub Action (optional)
+
+- There's a workflow at `.github/workflows/deploy.yml` that deploys to Vercel using a personal token. To use it, add these repository secrets in GitHub (Settings → Secrets & variables → Actions):
+
+	- `VERCEL_TOKEN` — Vercel personal token (create at https://vercel.com/account/tokens)
+	- `VERCEL_ORG_ID` — (optional) your Vercel org id
+	- `VERCEL_PROJECT_ID` — (optional) your Vercel project id
+
+You can add secrets via GitHub CLI:
+
+```powershell
+gh auth login
+gh secret set STRIPE_SECRET_KEY --body "sk_test_..."
+gh secret set VERCEL_TOKEN --body "<your_vercel_token>"
+```
+
+After adding the secrets, pushing to `main` will trigger the deploy workflow and publish your site.
 
 Security
 - Do not put secret keys in client code. Keep `STRIPE_SECRET_KEY` server-only.
